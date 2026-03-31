@@ -1,0 +1,323 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="campus_corridor">
+
+    <!-- Physics -->
+    <physics type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+
+    <!-- Lighting -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- Ground plane -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <!-- Ambient light -->
+    <light name="ambient_light" type="directional">
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.5 0.5 0.5 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>100</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>0.1 0.1 -0.9</direction>
+      <cast_shadows>false</cast_shadows>
+    </light>
+
+    <!-- ============================================================ -->
+    <!-- MAIN CORRIDOR: 12m long (x: -6 to +6), 4m wide (y: -2 to +2) -->
+    <!-- ============================================================ -->
+
+    <!-- Main corridor - Left wall (y = +2), full length -->
+    <!-- Split into two segments to allow the branch opening at x=6..6, y=+2 -->
+    <!-- Segment 1: x = -6 to x = 4 (length 10m) -->
+    <model name="main_left_wall_1">
+      <static>true</static>
+      <pose>-1 2 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>10 0.15 1.0</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>10 0.15 1.0</size></box>
+          </geometry>
+          <material>
+            <ambient>0.75 0.75 0.75 1</ambient>
+            <diffuse>0.75 0.75 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Segment 2: x = 8 to x = 6 (length 4m) - after the branch opening -->
+    <!-- Branch opening is at x=4 to x=8, y=+2 side -->
+    <!-- Actually, let's place the branch at x=6 mark going in +y direction -->
+    <!-- Branch opening: x = 4 to x = 8 at y = +2 -->
+    <!-- So main left wall segment 2: x = 8 to x = 6 (none needed if corridor ends at x=6) -->
+    <!-- Corridor is x=-6 to x=+6, branch at x=6 mark means at x=0 (6m from start at x=-6) -->
+
+    <!-- REVISED LAYOUT:
+         Main corridor: x = -6 to x = +6 (12m long)
+         Branch at x = 0 (6m from start) going in +y direction
+         Branch opening on left wall (y = +2) from x = -2 to x = +2 (4m wide)
+    -->
+
+    <!-- Main corridor - Left wall segment 1: x=-6 to x=-2 -->
+    <model name="main_left_wall_seg1">
+      <static>true</static>
+      <pose>-4 2 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>4 0.15 1.0</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>4 0.15 1.0</size></box>
+          </geometry>
+          <material>
+            <ambient>0.75 0.75 0.75 1</ambient>
+            <diffuse>0.75 0.75 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Main corridor - Left wall segment 2: x=+2 to x=+6 -->
+    <model name="main_left_wall_seg2">
+      <static>true</static>
+      <pose>4 2 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>4 0.15 1.0</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>4 0.15 1.0</size></box>
+          </geometry>
+          <material>
+            <ambient>0.75 0.75 0.75 1</ambient>
+            <diffuse>0.75 0.75 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Main corridor - Right wall (y = -2), full 12m -->
+    <model name="main_right_wall">
+      <static>true</static>
+      <pose>0 -2 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>12 0.15 1.0</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>12 0.15 1.0</size></box>
+          </geometry>
+          <material>
+            <ambient>0.75 0.75 0.75 1</ambient>
+            <diffuse>0.75 0.75 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Main corridor - End wall (x = +6) -->
+    <model name="main_end_wall">
+      <static>true</static>
+      <pose>6 0 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>0.15 4 1.0</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>0.15 4 1.0</size></box>
+          </geometry>
+          <material>
+            <ambient>0.75 0.75 0.75 1</ambient>
+            <diffuse>0.75 0.75 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ============================================================ -->
+    <!-- BRANCH CORRIDOR: goes from y=+2 to y=+7 (5m long), at x=-2..+2 -->
+    <!-- ============================================================ -->
+
+    <!-- Branch - Left wall (x = -2), from y=2 to y=7 -->
+    <model name="branch_left_wall">
+      <static>true</static>
+      <pose>-2 4.5 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>0.15 5 1.0</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>0.15 5 1.0</size></box>
+          </geometry>
+          <material>
+            <ambient>0.75 0.75 0.75 1</ambient>
+            <diffuse>0.75 0.75 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Branch - Right wall (x = +2), from y=2 to y=7 -->
+    <model name="branch_right_wall">
+      <static>true</static>
+      <pose>2 4.5 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>0.15 5 1.0</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>0.15 5 1.0</size></box>
+          </geometry>
+          <material>
+            <ambient>0.75 0.75 0.75 1</ambient>
+            <diffuse>0.75 0.75 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Branch - Dead-end wall (y = +7) -->
+    <model name="branch_end_wall">
+      <static>true</static>
+      <pose>0 7 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>4 0.15 1.0</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>4 0.15 1.0</size></box>
+          </geometry>
+          <material>
+            <ambient>0.75 0.75 0.75 1</ambient>
+            <diffuse>0.75 0.75 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ============================================================ -->
+    <!-- COLORED MARKER BOXES (mounted on right wall of main corridor) -->
+    <!-- Right wall is at y = -2, markers face inward (+y direction)   -->
+    <!-- Small boxes: 0.02 x 0.4 x 0.4, mounted at z=0.6             -->
+    <!-- ============================================================ -->
+
+    <!-- Green marker 1: at x=-2 on right wall (signals "turn left ahead") -->
+    <!-- x=4 from robot start at x=-4, so absolute x = -4+4 = 0... -->
+    <!-- Spec says "x=4" meaning 4m from corridor start. Start is x=-6, so x=-6+4=-2 -->
+    <model name="green_marker_1">
+      <static>true</static>
+      <pose>-2 -1.91 0.6 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>0.4 0.02 0.4</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>0.4 0.02 0.4</size></box>
+          </geometry>
+          <material>
+            <ambient>0 1 0 1</ambient>
+            <diffuse>0 1 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Green marker 2: at x=5.5 from start → x=-6+5.5=-0.5 -->
+    <!-- Reinforces the turn instruction at the junction -->
+    <model name="green_marker_2">
+      <static>true</static>
+      <pose>-0.5 -1.91 0.6 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>0.4 0.02 0.4</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>0.4 0.02 0.4</size></box>
+          </geometry>
+          <material>
+            <ambient>0 1 0 1</ambient>
+            <diffuse>0 1 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Red marker: x=2 inside the branch (destination marker) -->
+    <!-- Inside the branch, "right wall" is x=+2 side, 2m into the branch from y=2 → y=4 -->
+    <!-- Mounted on the right wall of the branch (x=+2) facing inward (-x direction) -->
+    <model name="red_marker">
+      <static>true</static>
+      <pose>1.91 4 0.6 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>0.02 0.4 0.4</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>0.02 0.4 0.4</size></box>
+          </geometry>
+          <material>
+            <ambient>1 0 0 1</ambient>
+            <diffuse>1 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ============================================================ -->
+    <!-- TURTLEBOT3 BURGER                                             -->
+    <!-- Spawned at x=-4, y=0, z=0.01, facing +x (yaw=0)             -->
+    <!-- ============================================================ -->
+    <include>
+      <uri>model://turtlebot3_burger</uri>
+      <pose>-4 0 0.01 0 0 0</pose>
+    </include>
+
+  </world>
+</sdf>

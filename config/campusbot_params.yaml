@@ -1,0 +1,15 @@
+campusbot_navigator:
+  ros__parameters:
+    linear_speed: 0.15
+    turn_speed: 0.5
+    detection_confidence_frames: 3
+    voting_window: 5
+    turn_duration_ticks: 95
+    watchdog_timeout_sec: 10.0
+    green_hsv_lower: [40, 100, 100]
+    green_hsv_upper: [80, 255, 255]
+    red_hsv_lower: [0, 150, 100]
+    red_hsv_upper: [10, 255, 255]
+    blue_hsv_lower: [100, 150, 50]
+    blue_hsv_upper: [130, 255, 255]
+    min_detection_pixels: 400
