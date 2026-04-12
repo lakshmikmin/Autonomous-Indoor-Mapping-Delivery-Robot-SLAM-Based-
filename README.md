@@ -1,4 +1,5 @@
 # CampusBot - Autonomous Corridor Navigation with Color Markers
+3d Fusion design - https://gmail5401024.autodesk360.com/g/shares/SH90d2dQT28d5b6028111993bc48b85bf8a6
 
 CampusBot is a ROS2-based autonomous navigation system that guides a TurtleBot3 Burger through campus corridors using color-coded marker detection. The robot uses its onboard camera to detect green (turn), blue (turn right), and red (destination) markers, navigating a T-junction corridor to reach its goal.
 
